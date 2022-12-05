@@ -1,10 +1,15 @@
-import datetime
+# import datetime
 from streamlit_bokeh_events import streamlit_bokeh_events
 from bokeh.models import CustomJS
 from bokeh.models.widgets import Button
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+
+import math
+from ortools.constraint_solver import routing_enums_pb2
+from ortools.constraint_solver import pywrapcp
+
 
 def plot_figure(my_df):
     fig = go.Figure(go.Scattermapbox(
@@ -58,10 +63,75 @@ def plot_figure(my_df):
             "zoom": 11.8})
     return fig
 
+# functions
+# def parseCSV(filename):
+#     places = list(csv.DictReader(open(filename, newline="")))
+#     print(places)
+#     return places
+
+
+def extractCoords(input):
+    coords = []
+    for item in input:
+        coords.append((float(item["lat"]), float(item["lng"])))
+    return coords
+
+
+def compute_euclidean_distance_matrix(locations):
+    size = len(locations)
+    distances = [[0 for x in range(size)] for y in range(size)]
+    scalar = 10000
+    for from_counter, from_node in enumerate(locations):
+        for to_counter, to_node in enumerate(locations):
+            if from_counter == to_counter:
+                distances[from_counter][to_counter] = 0
+            else:
+                x_d = (from_node[0] - to_node[0])*scalar
+                y_d = (from_node[1] - to_node[1])*scalar
+                distances[from_counter][to_counter] = int(math.hypot(x_d, y_d))
+    return distances
+
+
+def create_data_model(csvfile):
+    places =  csvfile.to_dict('records') #parseCSV(csvfile)
+    coords = extractCoords(places)
+    distancem = compute_euclidean_distance_matrix(coords)
+    data = {}
+    data["places"] = places
+    data["distance_matrix"] = distancem
+    data["num_vehicles"] = 1
+    data["depot"] = 0
+    return data
+
+
+def print_solution_gmaps(manager, routing, assignment, data, val=[]):
+    index = routing.Start(0)
+    while not routing.IsEnd(index):
+        previous_index = index
+        index = assignment.Value(routing.NextVar(index))
+        list_lat = data["places"][manager.IndexToNode(index)]["lat"]
+        list_long = data["places"][manager.IndexToNode(index)]["lng"]
+        list_title = data["places"][manager.IndexToNode(index)]["title"]
+        list_status = data["places"][manager.IndexToNode(index)]["status"]
+        val.append([list_lat, list_long, list_title,list_status])
+    return val
+
+
+def distance_callback(from_index, to_index):
+    from_node = manager.IndexToNode(from_index)
+    to_node = manager.IndexToNode(to_index)
+    return data_model["distance_matrix"][from_node][to_node]
+
+
+
+
+
+
+
+
 
 
 st.title('Trip to Madrid')
-csv_csv = pd.read_csv('csv_csv.csv')
 
 loc_button = Button(label="Get Location")
 loc_button.js_on_event("button_click", CustomJS(code="""
@@ -79,20 +149,71 @@ result = streamlit_bokeh_events(
     debounce_time=0)
 
 
-cols = st.columns((2, 1, .5))
-mylist = csv_csv['title']+" (" + csv_csv['status']+") "
-place = cols[0].selectbox("Status", options=list(mylist))
-sts = cols[1].selectbox("Status", options=("Done", "ToDo"))
-
-if cols[2].button("Update"):
-    csv_csv.loc[csv_csv["title"].str.contains(place[:-7]), "status"] = "Done"    
-    csv_csv.to_csv('csv_csv.csv', index=[0])
-    cols[2].markdown("Saved!")
-    # st.write(place)
-    # st.write(place[:-7])
-    # st.write(sts)
-    # st.write(csv_csv.loc[csv_csv["title"].str.contains(place[:-7])])
 
 
-fig = plot_figure(csv_csv)
+
+
+df_original = pd.read_csv('csv_csv.csv', index_col=[0])
+fill = st.selectbox("Filter day", options=df_original.columns[4:])
+df_entrada=df_original[df_original[fill]==1]
+
+
+
+
+
+my_expander = st.expander(label='Advanced Filters')
+
+with my_expander:
+    yyyyy = st.multiselect("Filter Places",options=list(df_entrada['title']),default=list(df_entrada['title']))
+    df_entrada=df_entrada[df_entrada["title"].isin(yyyyy)]
+    lay = st.columns((.5, 1, .5))
+
+    if lay[0].button("calculate"):
+        data_model = create_data_model(df_entrada)
+        manager = pywrapcp.RoutingIndexManager(len(data_model["distance_matrix"]), data_model["num_vehicles"], data_model["depot"])
+        routing = pywrapcp.RoutingModel(manager)
+        transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+        routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+        search_parameters.local_search_metaheuristic = (routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH)
+        search_parameters.time_limit.seconds = 30
+        assignment = routing.SolveWithParameters(search_parameters)
+        val = print_solution_gmaps(manager, routing, assignment, data_model)
+        val.append(val[0])
+        df_entrada = pd.DataFrame(val)
+        df_entrada.columns ="lat","lng","title","status"
+        df_entrada["lat"] = df_entrada["lat"].astype(float)
+        df_entrada["lng"] = df_entrada["lng"].astype(float)
+   
+    column = lay[1].text_input("here")
+
+    if lay[2].button("Save As"):       
+        df_original.loc[df_original["title"].isin(yyyyy), column] = 1   
+        df_original.to_csv("csv_csv.csv", index=[0])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fig = plot_figure(df_entrada)
 st.plotly_chart(fig, use_container_width=True)
+
+cols = st.columns((2, 1, .5))
+mylist = df_entrada['title']+" (" + df_entrada['status']+") "
+place = cols[0].selectbox("Status", options=list(mylist))[:-8]
+sts = cols[1].selectbox("Status", options=("Done", "ToDo"))
+if cols[2].button("Update"):
+    df_entrada.loc[df_entrada["title"].str.contains(place), "status"] = sts    
+    df_entrada.to_csv('df_entrada.csv', index=[0])
+    cols[2].markdown("Saved!")
