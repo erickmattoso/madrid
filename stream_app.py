@@ -80,18 +80,18 @@ result = streamlit_bokeh_events(
 
 
 cols = st.columns((2, 1, .5))
-mylist = csv_csv['title']+" ("+csv_csv['status']+") "
+mylist = csv_csv['title']+" (" + csv_csv['status']+") "
 place = cols[0].selectbox("Status", options=list(mylist))
 sts = cols[1].selectbox("Status", options=("Done", "ToDo"))
 
 if cols[2].button("Update"):
     csv_csv.loc[csv_csv["title"].str.contains(place[:-7]), "status"] = "Done"    
-    csv_csv.to_csv('csv_csv.csv')
+    csv_csv.to_csv('csv_csv.csv', index=[0])
     cols[2].markdown("Saved!")
-    st.write(place)
-    st.write(place[:-7])
-    st.write(sts)
-    st.write(csv_csv.loc[(csv_csv["title"] == place[:-7])])
+    # st.write(place)
+    # st.write(place[:-7])
+    # st.write(sts)
+    # st.write(csv_csv.loc[csv_csv["title"].str.contains(place[:-7])])
 
 
 fig = plot_figure(csv_csv)
