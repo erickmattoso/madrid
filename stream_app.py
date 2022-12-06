@@ -110,17 +110,7 @@ def distance_callback(from_index, to_index):
     to_node = manager.IndexToNode(to_index)
     return data_model["distance_matrix"][from_node][to_node]
 
-# create streamlit page
-st.set_page_config(layout='wide')
 
-# config streamlit layout
-hide_streamlit_style = \
-    """
-    <style>
-        .css-18e3th9 {padding: 1rem 5rem 10rem;}
-    </style>
-    """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.title('Trip to Madrid')
 loc_button = Button(label="Get Location")
