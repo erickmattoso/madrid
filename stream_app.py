@@ -156,7 +156,6 @@ result = streamlit_bokeh_events(
 df_original = pd.read_csv('csv_csv.csv', index_col=[0])
 fill = st.selectbox("Filter day", options=df_original.columns[4:])
 df_entrada = df_original[df_original[fill].notna()].sort_values(fill)
-# st.write(df_entrada)
 
 
 
