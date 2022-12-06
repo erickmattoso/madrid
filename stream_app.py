@@ -156,7 +156,7 @@ result = streamlit_bokeh_events(
 df_original = pd.read_csv('csv_csv.csv', index_col=[0])
 fill = st.selectbox("Filter day", options=df_original.columns[4:])
 df_entrada = df_original[df_original[fill].notna()].sort_values(fill)
-st.write(df_entrada)
+# st.write(df_entrada)
 
 
 
@@ -183,7 +183,7 @@ with my_expander:
         df_entrada.columns ="lat","lng","title","status"
         # df_entrada["lat"] = df_entrada["lat"].astype(float)
         # df_entrada["lng"] = df_entrada["lng"].astype(float)
-        st.write(df_entrada)
+        # st.write(df_entrada)
 
    
     column = lay[1].text_input("here")
@@ -192,7 +192,7 @@ with my_expander:
         # st.write(df_entrada.loc[df_entrada["title"].isin(yyyyy)].index)
         df_original.loc[df_original["title"].isin(yyyyy), column] =  df_entrada.index
         
-        st.write(df_original)
+        # st.write(df_original)
         df_original.to_csv("csv_csv.csv", index=[0])
 
 
