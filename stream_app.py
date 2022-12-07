@@ -136,13 +136,16 @@ fill = custom_col_0[0].selectbox("Filter day", options=df_original.columns[4:])
 df_entrada = df_original[df_original[fill].notna()].sort_values(fill)
 my_expander = st.expander(label='Advanced Filters')
 with my_expander:
-    yyyyy = st.multiselect("Filter Places",options=list(df_entrada['title']),default=list(df_entrada['title']))
     
-    itovisit = st.checkbox("To Visit")
+    itovisit = st.checkbox("To Visit",value=False)
     if itovisit:
         done = df_entrada[df_entrada["status"]!="Done"]
         yyyyy = list(done['title'])
-
+    else:
+        done = df_entrada#[df_entrada["status"]!="Done"]
+        yyyyy = list(done['title'])        
+    
+    yyyyy = st.multiselect("Filter Places",options=list(df_entrada['title']),default=yyyyy)
 
     df_entrada=df_entrada[df_entrada["title"].isin(yyyyy)]
     custom_col_1 = st.columns((.5, 1, .5))
@@ -161,6 +164,7 @@ with my_expander:
         val.append(val[0])
         df_entrada = pd.DataFrame(val)
         df_entrada.columns ="lat","lng","title","status"
+        df_entrada = df_entrada.drop_duplicates("title").reset_index(drop=True)
         st.session_state.df_entrada = df_entrada
 
     column = custom_col_1[1].text_input("Name of Route")
