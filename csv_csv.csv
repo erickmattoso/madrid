@@ -1,9 +1,9 @@
 ,lat,lng,title,status,All,todo
-0,40.418873,-3.711986,"Plaza de Oriente, Espanha",ToDo,0,17.0
-1,40.412186,-3.708109,"La Latina, Espanha",ToDo,1,13.0
-2,40.415512,-3.707401,"Plaza Mayor, Espanha",ToDo,2,12.0
+0,40.418873,-3.711986,"Plaza de Oriente, Espanha",Done,0,17.0
+1,40.412186,-3.708109,"La Latina, Espanha",Done,1,13.0
+2,40.415512,-3.707401,"Plaza Mayor, Espanha",Done,2,12.0
 3,40.41702,-3.703547,"Puerta del Sol, Espanha",Done,3,
-4,40.41465,-3.70134,"Plaza de Santa Ana, Espanha",ToDo,4,11.0
+4,40.41465,-3.70134,"Plaza de Santa Ana, Espanha",Done,4,11.0
 5,40.41354,-3.69822,"Barrio de Las Letras, Espanha",Done,5,
 6,40.40853,-3.693914,"Museu Nacional Centro de Arte Reina Sofia, Espanha",Done,6,
 7,40.407173,-3.692255,"Estacion de Atocha, Espanha",Done,7,
@@ -25,11 +25,11 @@
 23,40.42208,-3.69758,"Mercado de San Antón, Espanha",Done,23,
 24,40.422382,-3.703806,"Iglesia de San Antonio de Los Alemanes, Espanha",ToDo,24,10.0
 25,40.42176,-3.70835,"Gran Via, Espanha",Done,25,
-26,40.42377,-3.71459,"Museo Cerralbo, Espanha",ToDo,26,0.0
-27,40.424004,-3.71776,"Templo de Debod, Espanha",ToDo,27,1.0
-28,40.419743,-3.74884,"Casa de Campo, Espanha",ToDo,28,2.0
+26,40.42377,-3.71459,"Museo Cerralbo, Espanha",Done,26,0.0
+27,40.424004,-3.71776,"Templo de Debod, Espanha",Done,27,1.0
+28,40.419743,-3.74884,"Casa de Campo, Espanha",Done,28,2.0
 29,40.39961,-3.712749,"Parque Madrid Rio, Espanha",ToDo,29,4.0
-30,40.41084,-3.71448,"Real Basilica de San Francisco el Grande, Espanha",ToDo,30,14.0
+30,40.41084,-3.71448,"Real Basilica de San Francisco el Grande, Espanha",Done,30,14.0
 31,40.4137222,-3.7160586,"History Museum of Madrid, Calle de Fuencarral, 78, 28004 Madrid",Done,31,
-32,40.41554,-3.71367,"Catedral de Sta Maria la Real de la Almudena, Espanha",ToDo,32,15.0
-33,40.417755,-3.714083,"Palácio Real de Madrid, Espanha",ToDo,33,16.0
+32,40.41554,-3.71367,"Catedral de Sta Maria la Real de la Almudena, Espanha",Done,32,15.0
+33,40.417755,-3.714083,"Palácio Real de Madrid, Espanha",Done,33,16.0

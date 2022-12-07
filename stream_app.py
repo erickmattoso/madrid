@@ -178,12 +178,14 @@ with my_expander:
 
 fig = plot_figure(df_entrada)
 st.plotly_chart(fig, use_container_width=True)
+
+
 custom_col_2 = st.columns((2, 1, .5))
-mylist = df_entrada['title']+" (" + df_entrada['status']+") "
+mylist = df_original['title']+" (" + df_original['status']+") "
 place = custom_col_2[0].selectbox("Status", options=list(mylist))[:-8]
 sts = custom_col_2[1].selectbox("Status", options=("Done", "ToDo"))
 if custom_col_2[2].button("Update"):
-    df_entrada.loc[df_entrada["title"].str.contains(place), "status"] = sts    
-    df_entrada.to_csv('csv_csv.csv', index=[0])
+    df_original.loc[df_original["title"].str.contains(place), "status"] = sts    
+    df_original.to_csv('csv_csv.csv', index=[0])
     custom_col_2[2].markdown("Saved!")
     st.experimental_rerun()
