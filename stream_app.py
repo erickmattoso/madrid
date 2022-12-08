@@ -15,8 +15,8 @@ def plot_figure(my_df):
         mode="markers",
         hovertext=["Hotel"],
         hoverinfo='text',
-        lon=[-3.670566],
-        lat=[40.3961208],
+        # lon=[-3.670566],lat=[40.3961208],
+        lon=[2.1451503],lat=[41.389798],
         marker={"size": 25}))
     
     fig.add_trace(go.Scattermapbox(
@@ -128,7 +128,7 @@ result = streamlit_bokeh_events(
     override_height=40,
     debounce_time=0)
 
-df_original = pd.read_csv('csv_csv.csv', index_col=[0])
+df_original = pd.read_csv('barcelona.csv', index_col=[0])
 
 custom_col_0 = st.columns((1, 1))
 
@@ -169,12 +169,17 @@ with my_expander:
 
     column = custom_col_1[1].text_input("Name of Route")
     custom_col_1[2].write("Click to Save Route")
-    if custom_col_1[2].button("Save As"):
+    if custom_col_1[2].button("Save As") and column:
         df_entrada = st.session_state.df_entrada.reset_index()
         new = df_entrada[["title","index"]]
         new.columns = "title",column
+        try:
+            df_original=df_original.drop(columns=column)
+        except:
+            pass
         df_original = pd.merge(df_original,new,on="title",how="left")
-        df_original.to_csv("csv_csv.csv", index=[0])
+        df_original.to_csv("barcelona.csv", index=[0])
+        custom_col_1[2].write("Saved")
 
 fig = plot_figure(df_entrada)
 st.plotly_chart(fig, use_container_width=True)
@@ -186,6 +191,6 @@ place = custom_col_2[0].selectbox("Status", options=list(mylist))[:-8]
 sts = custom_col_2[1].selectbox("Status", options=("Done", "ToDo"))
 if custom_col_2[2].button("Update"):
     df_original.loc[df_original["title"].str.contains(place), "status"] = sts    
-    df_original.to_csv('csv_csv.csv', index=[0])
+    df_original.to_csv('barcelona.csv', index=[0])
     custom_col_2[2].markdown("Saved!")
     st.experimental_rerun()
