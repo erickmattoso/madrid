@@ -190,7 +190,7 @@ mylist = df_original['title']+" (" + df_original['status']+") "
 place = custom_col_2[0].selectbox("Status", options=list(mylist))[:-8]
 sts = custom_col_2[1].selectbox("Status", options=("Done", "ToDo"))
 if custom_col_2[2].button("Update"):
-    df_original.loc[df_original["title"].str.contains(place), "status"] = sts    
+    df_original.loc[df_original["title"].str.contains(place, regex=False), "status"] = sts    
     df_original.to_csv('barcelona.csv', index=[0])
     custom_col_2[2].markdown("Saved!")
     st.experimental_rerun()
