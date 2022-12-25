@@ -5,6 +5,7 @@
 #files
 credentials.py
 gbq.py
+.DS_Store
 
 #foder
 /delete
