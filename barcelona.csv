@@ -1,26 +1,26 @@
-,lat,lng,title,status,Trip,All,5tops1,5tops2,5tops3
-0,41.403423,2.174611,1. Basílica de la Sagrada Familia,Done,0,24,1.0,,
-1,41.3827,2.177113,2. Gothic Quarter (Barri Gotic),ToDo,1,21,3.0,,
-2,41.391712,2.164824,3. Casa Batlló,ToDo,2,1,4.0,,
-3,41.387573,2.175302,4. Palace of Catalan Music,ToDo,3,18,2.0,,
-4,41.395325,2.161925,5. Casa Milà - La Pedrera,ToDo,4,3,0.0,,
-5,41.380924,2.122952,6. Camp Nou,ToDo,5,9,,4.0,
-6,41.38174,2.171584,7. Mercat de la Boqueria,ToDo,6,16,,1.0,
-7,41.38349,2.18178,8. Basílica de Santa Maria del Mar,ToDo,7,22,,2.0,
-8,41.41142,2.174328,9. Recinte Modernista de Sant Pau,ToDo,8,0,,3.0,
-9,41.368454,2.153715,10. Museu Nacional d'Art de Catalunya - MNAC,ToDo,9,12,,0.0,
-10,41.38442,2.17601,11. Barcelona Cathedral,ToDo,10,20,,,4.0
-11,41.371174,2.151718,12. The Magic Fountain,ToDo,11,11,,,1.0
-12,41.364548,2.165427,13. Parc de Montjuic,ToDo,12,14,,,0.0
-13,41.412766,2.131519,14. CosmoCaixa,ToDo,13,7,,,2.0
-14,41.40341,2.15066,15. Casa Vicens,ToDo,14,5,,,3.0
-15,41.39493,2.16177,16. Passeig de Gracia,ToDo,15,2,,,
-16,41.378883,2.17424,17. Palau Güell,ToDo,16,15,,,
-17,41.388542,2.18718,18. Parc de la Ciutadella,ToDo,17,23,,,
-18,41.382168,2.172549,19. Erotic Museum of Barcelona (Museu de l'Erotica),ToDo,18,17,,,
-19,41.36852,2.159726,20. Joan Miro Foundation,ToDo,19,13,,,
-20,41.387,2.17611,21. El Born,ToDo,20,19,,,
-21,41.37494,2.14834,22. Plaça d'Espanya,ToDo,21,10,,,
-22,41.4215,2.1192,23. Templo del Sagrado Corazon de Jesus,ToDo,22,8,,,
-23,41.39621,2.161339,24. L'Eixample District,ToDo,23,4,,,
-24,41.41451,2.152709,25. Parc Guell,ToDo,24,6,,,
+,lat,lng,title,status,All,5tops1,5tops2,5tops3
+0,41.403423,2.174611,1. Basílica de la Sagrada Familia,Done,24,1.0,,
+1,41.3827,2.177113,2. Gothic Quarter (Barri Gotic),ToDo,21,3.0,,
+2,41.391712,2.164824,3. Casa Batlló,ToDo,1,4.0,,
+3,41.387573,2.175302,4. Palace of Catalan Music,ToDo,18,2.0,,
+4,41.395325,2.161925,5. Casa Milà - La Pedrera,ToDo,3,0.0,,
+5,41.380924,2.122952,6. Camp Nou,ToDo,9,,4.0,
+6,41.38174,2.171584,7. Mercat de la Boqueria,ToDo,16,,1.0,
+7,41.38349,2.18178,8. Basílica de Santa Maria del Mar,ToDo,22,,2.0,
+8,41.41142,2.174328,9. Recinte Modernista de Sant Pau,ToDo,0,,3.0,
+9,41.368454,2.153715,10. Museu Nacional d'Art de Catalunya - MNAC,ToDo,12,,0.0,
+10,41.38442,2.17601,11. Barcelona Cathedral,ToDo,20,,,4.0
+11,41.371174,2.151718,12. The Magic Fountain,ToDo,11,,,1.0
+12,41.364548,2.165427,13. Parc de Montjuic,ToDo,14,,,0.0
+13,41.412766,2.131519,14. CosmoCaixa,ToDo,7,,,2.0
+14,41.40341,2.15066,15. Casa Vicens,ToDo,5,,,3.0
+15,41.39493,2.16177,16. Passeig de Gracia,ToDo,2,,,
+16,41.378883,2.17424,17. Palau Güell,ToDo,15,,,
+17,41.388542,2.18718,18. Parc de la Ciutadella,ToDo,23,,,
+18,41.382168,2.172549,19. Erotic Museum of Barcelona (Museu de l'Erotica),ToDo,17,,,
+19,41.36852,2.159726,20. Joan Miro Foundation,ToDo,13,,,
+20,41.387,2.17611,21. El Born,ToDo,19,,,
+21,41.37494,2.14834,22. Plaça d'Espanya,ToDo,10,,,
+22,41.4215,2.1192,23. Templo del Sagrado Corazon de Jesus,ToDo,8,,,
+23,41.39621,2.161339,24. L'Eixample District,ToDo,4,,,
+24,41.41451,2.152709,25. Parc Guell,ToDo,6,,,

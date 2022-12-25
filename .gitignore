@@ -1,0 +1,10 @@
+#Temp Folders
+.streamlit
+.ipynb_checkpoints
+__pycache__
+
+#secrets
+credentials.py
+
+#jupyter
+.ipynb
