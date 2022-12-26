@@ -1,0 +1,60 @@
+,id,placename,lat,lng,city
+0,0,"Plaza de Oriente, Espanha",40.418873,-3.711986,madrid
+1,1,"La Latina, Espanha",40.412186,-3.708109,madrid
+2,2,"Plaza Mayor, Espanha",40.415512,-3.707401,madrid
+3,3,"Puerta del Sol, Espanha",40.41702,-3.703547,madrid
+4,4,"Plaza de Santa Ana, Espanha",40.41465,-3.70134,madrid
+5,5,"Barrio de Las Letras, Espanha",40.41354,-3.69822,madrid
+6,6,"Museu Nacional Centro de Arte Reina Sofia, Espanha",40.40853,-3.693914,madrid
+7,7,"Estacion de Atocha, Espanha",40.407173,-3.692255,madrid
+8,8,"Museu do Prado, Espanha",40.413822,-3.692235,madrid
+9,9,"Museu Thyssen-Bornemisza, Espanha",40.41616,-3.6948,madrid
+10,10,"Paseo del Prado, Espanha",40.41797,-3.69266,madrid
+11,11,"Palacio de Cibeles, Espanha",40.41901,-3.69218,madrid
+12,12,"Plaza de Cibeles, Espanha",40.4203,-3.69141,madrid
+13,13,"Museo Arqueologico Nacional, Espanha",40.42333,-3.688706,madrid
+14,14,"Parque del Retiro, Espanha",40.414543,-3.683596,madrid
+15,15,"Palacio De Cristal, Espanha",40.41354,-3.68226,madrid
+16,16,Hotel,40.3961208,-3.670566,madrid
+17,17,"Parque de El Capricho, Espanha",40.45446,-3.60007,madrid
+18,18,"Plaza de Toros de Las Ventas, Espanha",40.43152,-3.66284,madrid
+19,19,"Barrio de Salamanca, Espanha",40.429058,-3.67425,madrid
+20,20,"Museo Lazaro Galdiano, Espanha",40.43703,-3.685992,madrid
+21,21,"Museu Sorolla, Espanha",40.435505,-3.692508,madrid
+22,22,"Malasana, Espanha",40.4288,-3.70455,madrid
+23,23,"Mercado de San Antón, Espanha",40.42208,-3.69758,madrid
+24,24,"Iglesia de San Antonio de Los Alemanes, Espanha",40.422382,-3.703806,madrid
+25,25,"Gran Via, Espanha",40.42176,-3.70835,madrid
+26,26,"Museo Cerralbo, Espanha",40.42377,-3.71459,madrid
+27,27,"Templo de Debod, Espanha",40.424004,-3.71776,madrid
+28,28,"Casa de Campo, Espanha",40.419743,-3.74884,madrid
+29,29,"Parque Madrid Rio, Espanha",40.39961,-3.712749,madrid
+30,30,"Real Basilica de San Francisco el Grande, Espanha",40.41084,-3.71448,madrid
+31,31,"History Museum of Madrid, Calle de Fuencarral, 78, 28004 Madrid",40.4137222,-3.7160586,madrid
+32,32,"Catedral de Sta Maria la Real de la Almudena, Espanha",40.41554,-3.71367,madrid
+33,33,"Palácio Real de Madrid, Espanha",40.417755,-3.714083,madrid
+34,0,1. Basílica de la Sagrada Familia,41.403423,2.174611,barcelona
+35,1,2. Gothic Quarter (Barri Gotic),41.3827,2.177113,barcelona
+36,2,3. Casa Batlló,41.391712,2.164824,barcelona
+37,3,4. Palace of Catalan Music,41.387573,2.175302,barcelona
+38,4,5. Casa Milà - La Pedrera,41.395325,2.161925,barcelona
+39,5,6. Camp Nou,41.380924,2.122952,barcelona
+40,6,7. Mercat de la Boqueria,41.38174,2.171584,barcelona
+41,7,8. Basílica de Santa Maria del Mar,41.38349,2.18178,barcelona
+42,8,9. Recinte Modernista de Sant Pau,41.41142,2.174328,barcelona
+43,9,10. Museu Nacional d'Art de Catalunya - MNAC,41.368454,2.153715,barcelona
+44,10,11. Barcelona Cathedral,41.38442,2.17601,barcelona
+45,11,12. The Magic Fountain,41.371174,2.151718,barcelona
+46,12,13. Parc de Montjuic,41.364548,2.165427,barcelona
+47,13,14. CosmoCaixa,41.412766,2.131519,barcelona
+48,14,15. Casa Vicens,41.40341,2.15066,barcelona
+49,15,16. Passeig de Gracia,41.39493,2.16177,barcelona
+50,16,17. Palau Güell,41.378883,2.17424,barcelona
+51,17,18. Parc de la Ciutadella,41.388542,2.18718,barcelona
+52,18,19. Erotic Museum of Barcelona (Museu de l'Erotica),41.382168,2.172549,barcelona
+53,19,20. Joan Miro Foundation,41.36852,2.159726,barcelona
+54,20,21. El Born,41.387,2.17611,barcelona
+55,21,22. Plaça d'Espanya,41.37494,2.14834,barcelona
+56,22,23. Templo del Sagrado Corazon de Jesus,41.4215,2.1192,barcelona
+57,23,24. L'Eixample District,41.39621,2.161339,barcelona
+58,24,25. Parc Guell,41.41451,2.152709,barcelona

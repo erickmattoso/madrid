@@ -26,24 +26,8 @@ st.markdown(hide_streamlit_style, unsafe_allow_html = True)
 usersid = 1
 
 ## READ DATA
-# TODO: df_original_tuple = rdt.read_df_original(usersid_filtered = usersid)
-# TODO: routename = rdt.read_routename(usersid_filtered = usersid)
-
-#######   TEMP   ####### 
-import pandas as pd #THIS IS A TEMP SOLUTION
-places = pd.read_csv("data/places.csv",index_col=[0]) #THIS IS A TEMP SOLUTION
-comments = pd.read_csv("data/comments.csv",index_col=[0]) #THIS IS A TEMP SOLUTION
-comments = comments[comments['usersid']==usersid] #THIS IS A TEMP SOLUTION
-df = pd.merge(places,comments,how='left',left_on='id',right_on='placesid') #THIS IS A TEMP SOLUTION
-df = df[df['city']=='barcelona'] #THIS IS A TEMP SOLUTION
-df = df[['id','placename','lat','lng','routestatus']] #THIS IS A TEMP SOLUTION
-df['routestatus'] =  df['routestatus'].fillna('ToDo') #THIS IS A TEMP SOLUTION
-df_original_tuple = list(df.itertuples(index=False)) #THIS IS A TEMP SOLUTION
-route = pd.read_csv("data/routes.csv",index_col=[0]) #THIS IS A TEMP SOLUTION
-routename_all = list(route.itertuples(index=False))  #THIS IS A TEMP SOLUTION
-routes = route[route['usersid']==usersid]  #THIS IS A TEMP SOLUTION
-routename = list(routes.itertuples(index=False))  #THIS IS A TEMP SOLUTION
-#######   TEMP   #######
+df_original_tuple = rdt.read_df_original(usersid_filtered = usersid)
+routename = rdt.read_routename(usersid_filtered = usersid)
 
 
 ## SECOND PART - FILTERS
@@ -113,59 +97,50 @@ if st.session_state.get('button') !=  True:
 
 # if button is clicked with routename chosen
 if ((st.session_state['button'] ==  True) and (routename_chosen) and (routename_chosen!= 'All')):
-    # TODO: exists = rdt.check_route_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
-    exists = [item for item in routename if ((item[0]==routename_chosen)&(item[1]==usersid))] #THIS IS A TEMP SOLUTION
+    exists = rdt.check_route_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
     placesid = [item[0] for item in df_entrada_tuple]
     iteraction = len(placesid)
-    final_routename = [item for item in routename_all if ((item[0]!=routename_chosen)or(item[1]!=usersid))] #THIS IS A TEMP SOLUTION
-
-
+    
     if exists:
         st.sidebar.write('This register already exists, what you wanna do?')
         custom_cols = st.sidebar.columns((1, 1))
 
         if custom_cols[0].button('Replace?'):
-            ## first it deletes the filter for this user
-            # TODO: rdt.delete_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
-            ## apply changes
-            # TODO: rdt.session.commit()
-            # TODO: rdt.insert_table(
-            #     iteraction = len(placesid),
-            #     modeltable = Routes,
-            #     routename_chosen = routename_chosen,
-            #     usersid_filtered = usersid,
-            #     placesid = placesid)
-            for i in range(iteraction): #THIS IS A TEMP SOLUTION
-                final_routename.append((routename_chosen,usersid,placesid[i])) #THIS IS A TEMP SOLUTION
-            pd.DataFrame(final_routename).to_csv('data/routes.csv') #THIS IS A TEMP SOLUTION
-            ## apply changes    
-            # TODO: rdt.session.commit()
+            # first it deletes the filter for this user
+            rdt.delete_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
+            # apply changes
+            rdt.session.commit()
+
+            rdt.insert_table(
+                iteraction = len(placesid),
+                modeltable = Routes,
+                routename_chosen = routename_chosen,
+                usersid_filtered = usersid,
+                placesid = placesid)
+
+            # apply changes    
+            rdt.session.commit()
             st.sidebar.write('Done')
         
         # This will remove this filter
         if custom_cols[1].button('Delete?'):
-            # TODO: rdt.delete_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
-            ## apply changes  
-            # TODO: rdt.session.commit()
-            pd.DataFrame(final_routename).to_csv('data/routes.csv') #THIS IS A TEMP SOLUTION
+            rdt.delete_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
+            # apply changes  
+            rdt.session.commit()
             st.sidebar.write('Done')
 
     else:
-        ## This will add a brand new record
-        # TODO: rdt.insert_table(
-        #     iteraction = len(placesid),
-        #     modeltable = Routes,
-        #     routename_chosen = routename_chosen,
-        #     usersid_filtered = usersid,
-        #     placesid = placesid)
-        ## apply changes  
-        # TODO: rdt.session.commit()
-        # st.sidebar.write('Done')
-        
-        for i in range(iteraction): #THIS IS A TEMP SOLUTION
-            routename_all.append((routename_chosen,usersid,placesid[i])) #THIS IS A TEMP SOLUTION
-            pd.DataFrame(routename_all).to_csv('data/routes.csv') #THIS IS A TEMP SOLUTION
-            st.sidebar.write('Done')
+        # This will add a brand new record
+        rdt.insert_table(
+            iteraction = len(placesid),
+            modeltable = Routes,
+            routename_chosen = routename_chosen,
+            usersid_filtered = usersid,
+            placesid = placesid)
+        # apply changes  
+        rdt.session.commit()
+        st.sidebar.write('Done')
+
 
 ## third part - map the solution
 # coordinates

@@ -1,14 +1,15 @@
 # types of files
 *.ipynb
 *.sql
+*.json
 
 #files
 credentials.py
 gbq.py
+.DS_Store
 
 #foder
 /delete
-
 __pycache__
 .ipynb_checkpoints
-.streamlit]
+.streamlit
