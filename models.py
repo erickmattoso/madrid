@@ -66,3 +66,17 @@ class Comments(Base):
     def __repr__(self):
         return f"<Comments {self.comment_text}>"
 
+class Testing(Base):
+    """testing are filters """
+
+    __tablename__ = "travelOptimization.testing"
+
+    # id = Column(Integer, primary_key=True, autoincrement="auto")
+    ADDRESS_ID = Column(String(255), primary_key=True)
+    INDIVIDUAL_ID = Column(String(255))
+    FIRST_NAME = Column(String(255))
+    LAST_NAME = Column(String(255))
+
+
+    def __repr__(self):
+        return f"<testing {self.INDIVIDUAL_ID}>"

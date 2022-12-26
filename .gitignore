@@ -1,6 +1,7 @@
 # types of files
 *.ipynb
 *.sql
+*.json
 
 #files
 credentials.py
@@ -9,7 +10,6 @@ gbq.py
 
 #foder
 /delete
-
 __pycache__
 .ipynb_checkpoints
-.streamlit]
+.streamlit

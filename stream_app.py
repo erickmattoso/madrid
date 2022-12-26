@@ -1,196 +1,239 @@
-# import datetime
-from streamlit_bokeh_events import streamlit_bokeh_events
-from bokeh.models import CustomJS
-from bokeh.models.widgets import Button
+"""
+    Explain
+"""
+
+## IMPORT LIBS
+from streamlit.components.v1 import html
+import tspmodel
 import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
+from models import Routes
+import readdata as rdt
 
-import math
-from ortools.constraint_solver import routing_enums_pb2
-from ortools.constraint_solver import pywrapcp
+## PAGE LAYOUT
+# Define the size of this page
+st.set_page_config(layout = 'wide')
 
-def plot_figure(my_df):
-    fig = go.Figure(go.Scattermapbox(
-        mode="markers",
-        hovertext=["Hotel"],
-        hoverinfo='text',
-        # lon=[-3.670566],lat=[40.3961208],
-        lon=[2.1451503],lat=[41.389798],
-        marker={"size": 25}))
+# config streamlit layout
+hide_streamlit_style = \
+    """
+    <style>
+        .css-18e3th9 {padding: 1.5rem 1rem 1rem;}
+    </style>
+    """
+st.markdown(hide_streamlit_style, unsafe_allow_html = True)
+
+## TODO: Function to filter usersid
+usersid = 1
+
+## READ DATA
+# TODO: df_original_tuple = rdt.read_df_original(usersid_filtered = usersid)
+# TODO: routename = rdt.read_routename(usersid_filtered = usersid)
+
+#######   TEMP   ####### 
+import pandas as pd #THIS IS A TEMP SOLUTION
+places = pd.read_csv("data/places.csv",index_col=[0]) #THIS IS A TEMP SOLUTION
+comments = pd.read_csv("data/comments.csv",index_col=[0]) #THIS IS A TEMP SOLUTION
+comments = comments[comments['usersid']==usersid] #THIS IS A TEMP SOLUTION
+df = pd.merge(places,comments,how='left',left_on='id',right_on='placesid') #THIS IS A TEMP SOLUTION
+df = df[df['city']=='barcelona'] #THIS IS A TEMP SOLUTION
+df = df[['id','placename','lat','lng','routestatus']] #THIS IS A TEMP SOLUTION
+df['routestatus'] =  df['routestatus'].fillna('ToDo') #THIS IS A TEMP SOLUTION
+df_original_tuple = list(df.itertuples(index=False)) #THIS IS A TEMP SOLUTION
+route = pd.read_csv("data/routes.csv",index_col=[0]) #THIS IS A TEMP SOLUTION
+routename_all = list(route.itertuples(index=False))  #THIS IS A TEMP SOLUTION
+routes = route[route['usersid']==usersid]  #THIS IS A TEMP SOLUTION
+routename = list(routes.itertuples(index=False))  #THIS IS A TEMP SOLUTION
+#######   TEMP   #######
+
+
+## SECOND PART - FILTERS
+
+# custom cols
+custom_cols = st.columns((1, 1))
+
+# add the option all
+filter_names = list(set([item[0] for item in routename])) # get unique filters
+filter_names = sorted(filter_names)  # ordering alphabetically
+filter_names.insert(0, 'All') # insert option all
+
+# choose filter route options
+route_filter = custom_cols[0].selectbox('Choose a filter', options = filter_names)
+
+# If filter is All it remains as the original
+if route_filter ==  'All':
+    df_entrada_tuple = df_original_tuple.copy()
+
+else:
+    ## based on the name of the filter it will get the locations
+    # find filter chosen by user
+    chosen_filter = [item for item in routename if item[0] ==  route_filter]
+    # list of places in that filter
+    chosen_filter = [item[2] for item in chosen_filter]
+    # list of tuples filtered by list of places in that filter
+    df_entrada_tuple = [tuple for tuple in df_original_tuple if tuple[0] in chosen_filter]
+
+# radio box to select back all places
+radio = st.sidebar.radio('Select places to visit', ('All places for this filter', 'Places to be visited'))
+
+# select name of all places available in database
+all_original_places = [item[1] for item in df_original_tuple]
+
+# show expander
+my_expander = st.sidebar.expander(label = 'Advanced Filters')
+with my_expander:
+    # Select all from this filter
+    if radio ==  'All places for this filter':
+        to_visit = st.multiselect(
+            'Select one or more options:',
+            options = all_original_places,
+            default = [item[1] for item in df_entrada_tuple])
     
-    fig.add_trace(go.Scattermapbox(
-        mode="markers+lines",
-        hovertext=list(my_df.title),
-        hoverinfo='text',
-        lon=my_df.lng,
-        lat=my_df.lat,
-        marker={
-            'color': 'green',
-            'size': 15,
-            'opacity': 0.9
-        }))
-    
-    done = my_df[my_df["status"]=="Done"]
-    fig.add_trace(go.Scattermapbox(
-        mode="markers",
-        hovertext=list(done.title),
-        hoverinfo='text',
-        lon=done.lng,
-        lat=done.lat,
-        marker={
-            'color': 'red',
-            'size': 15,
-            'opacity': 0.9
-        }))
+    # in case select Remove places already visited 
+    else:
+        done = [item for item in df_entrada_tuple if item[4] !=  'Done']
+        to_visit = st.multiselect(
+            'Select one or more options:',
+            options = all_original_places,
+            default = [item[1] for item in done])
 
-    try:
-        fig.add_trace(go.Scattermapbox(
-            lon=[result.get("GET_LOCATION")["lon"]],
-            lat=[result.get("GET_LOCATION")["lat"]],
-            marker={"size": 15})
-        )
-    except:
-        pass
-
-    fig.update_layout(
-        showlegend=False,
-        margin={"l": 0, "t": 0, "b": 0, "r": 0},
-        mapbox={
-            "center": {"lon": my_df["lng"].mean(), "lat": my_df["lat"].mean()},
-            "style": "carto-positron",
-            "zoom": 11.8})
-    return fig
-    
-def extractCoords(input):
-    coords = []
-    for item in input:
-        coords.append((float(item["lat"]), float(item["lng"])))
-    return coords
-
-def compute_euclidean_distance_matrix(locations):
-    size = len(locations)
-    distances = [[0 for x in range(size)] for y in range(size)]
-    scalar = 10000
-    for from_counter, from_node in enumerate(locations):
-        for to_counter, to_node in enumerate(locations):
-            if from_counter == to_counter:
-                distances[from_counter][to_counter] = 0
-            else:
-                x_d = (from_node[0] - to_node[0])*scalar
-                y_d = (from_node[1] - to_node[1])*scalar
-                distances[from_counter][to_counter] = int(math.hypot(x_d, y_d))
-    return distances
-
-def create_data_model(csvfile):
-    places =  csvfile.to_dict('records') #parseCSV(csvfile)
-    coords = extractCoords(places)
-    distancem = compute_euclidean_distance_matrix(coords)
-    data = {}
-    data["places"] = places
-    data["distance_matrix"] = distancem
-    data["num_vehicles"] = 1
-    data["depot"] = 0
-    return data
-
-def print_solution_gmaps(manager, routing, assignment, data, val=[]):
-    index = routing.Start(0)
-    while not routing.IsEnd(index):
-        previous_index = index
-        index = assignment.Value(routing.NextVar(index))
-        list_lat = data["places"][manager.IndexToNode(index)]["lat"]
-        list_long = data["places"][manager.IndexToNode(index)]["lng"]
-        list_title = data["places"][manager.IndexToNode(index)]["title"]
-        list_status = data["places"][manager.IndexToNode(index)]["status"]
-        val.append([list_lat, list_long, list_title,list_status])
-    return val
-
-def distance_callback(from_index, to_index):
-    from_node = manager.IndexToNode(from_index)
-    to_node = manager.IndexToNode(to_index)
-    return data_model["distance_matrix"][from_node][to_node]
+    if to_visit:
+        df_entrada_tuple = [tuple for tuple in df_original_tuple if tuple[1] in to_visit]
 
 
+# custom cols
+custom_cols = st.sidebar.columns((1, 1))
 
-st.title('Trip to Madrid')
-loc_button = Button(label="Get Location")
-loc_button.js_on_event("button_click", CustomJS(code="""
+# insert name of the route
+routename_chosen = custom_cols[0].text_input('Name of Route').strip()
+
+# this only set the button
+custom_cols[1].write('Save route in filters')
+if st.session_state.get('button') !=  True:
+    st.session_state['button'] = custom_cols[1].button('Save')
+
+# if button is clicked with routename chosen
+if ((st.session_state['button'] ==  True) and (routename_chosen) and (routename_chosen!= 'All')):
+    # TODO: exists = rdt.check_route_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
+    exists = [item for item in routename if ((item[0]==routename_chosen)&(item[1]==usersid))] #THIS IS A TEMP SOLUTION
+    placesid = [item[0] for item in df_entrada_tuple]
+    iteraction = len(placesid)
+    final_routename = [item for item in routename_all if ((item[0]!=routename_chosen)or(item[1]!=usersid))] #THIS IS A TEMP SOLUTION
+
+
+    if exists:
+        st.sidebar.write('This register already exists, what you wanna do?')
+        custom_cols = st.sidebar.columns((1, 1))
+
+        if custom_cols[0].button('Replace?'):
+            ## first it deletes the filter for this user
+            # TODO: rdt.delete_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
+            ## apply changes
+            # TODO: rdt.session.commit()
+            # TODO: rdt.insert_table(
+            #     iteraction = len(placesid),
+            #     modeltable = Routes,
+            #     routename_chosen = routename_chosen,
+            #     usersid_filtered = usersid,
+            #     placesid = placesid)
+            for i in range(iteraction): #THIS IS A TEMP SOLUTION
+                final_routename.append((routename_chosen,usersid,placesid[i])) #THIS IS A TEMP SOLUTION
+            pd.DataFrame(final_routename).to_csv('data/routes.csv') #THIS IS A TEMP SOLUTION
+            ## apply changes    
+            # TODO: rdt.session.commit()
+            st.sidebar.write('Done')
+        
+        # This will remove this filter
+        if custom_cols[1].button('Delete?'):
+            # TODO: rdt.delete_table(my_table = 'routes',routename_chosen = routename_chosen,usersid_filtered = usersid)
+            ## apply changes  
+            # TODO: rdt.session.commit()
+            pd.DataFrame(final_routename).to_csv('data/routes.csv') #THIS IS A TEMP SOLUTION
+            st.sidebar.write('Done')
+
+    else:
+        ## This will add a brand new record
+        # TODO: rdt.insert_table(
+        #     iteraction = len(placesid),
+        #     modeltable = Routes,
+        #     routename_chosen = routename_chosen,
+        #     usersid_filtered = usersid,
+        #     placesid = placesid)
+        ## apply changes  
+        # TODO: rdt.session.commit()
+        # st.sidebar.write('Done')
+        
+        for i in range(iteraction): #THIS IS A TEMP SOLUTION
+            routename_all.append((routename_chosen,usersid,placesid[i])) #THIS IS A TEMP SOLUTION
+            pd.DataFrame(routename_all).to_csv('data/routes.csv') #THIS IS A TEMP SOLUTION
+            st.sidebar.write('Done')
+
+## third part - map the solution
+# coordinates
+coordinates = {tup[1]: (tup[2],tup[3]) for tup in df_entrada_tuple}
+
+# myplaces
+myplaces = [item[1] for item in df_entrada_tuple]
+
+if len(myplaces) > 3:
+    myplaces, coordinates = tspmodel.model_TSP(coordinates, myplaces)
+
+# create points in map - All points
+lat = [item[2] for item in df_original_tuple]
+lng = [item[3] for item in df_original_tuple]
+all_ = [tuple(x) for x in zip(lat, lng, all_original_places)] #tuple of coord
+
+# create points in map - already visited   
+done = [item for item in df_original_tuple if item[4] ==  'Done']
+lat = [item[2] for item in done]
+lng = [item[3] for item in done]
+done = [tuple(x) for x in zip(lat, lng)] #tuple of coord
+
+# create points in map - to be visited
+todo = [item for item in df_entrada_tuple if item[4] !=  'Done']
+lat = [item[2] for item in todo]
+lng = [item[3] for item in todo]
+todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
+
+# create map
+mappy = rdt.plotmap(todo=todo,done=done,all=all_,myplaces=myplaces,coordinates=coordinates)
+
+
+asasasas=True
+if asasasas:
+    # create boundaries to centralize
+    latz = [item[2] for item in df_entrada_tuple]
+    lngz = [item[3] for item in df_entrada_tuple]
+    boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
+
+    # fit mappy in these boundaries
+    mappy.fit_bounds(boundaries)
+
+else:
+    mappy.fit_bounds(mappy.get_bounds(), padding=(30, 30))
+
+# plot map
+st.write(mappy)
+
+## Fourth part - Save what is Done
+# st.markdown("---")
+# custom_col_2 = st.columns((2, 1, .5))
+# mylist = df_original['title']+" (" + df_original['status']+") "
+# place = custom_col_2[0].selectbox("Status", options = list(mylist))[:-8]
+# sts = custom_col_2[1].selectbox("Status", options = ("Done", "ToDo"))
+
+# custom_col_2[2].write("Save")
+# if custom_col_2[2].button("Update"):
+#     df_original.loc[df_original['title'].str.contains(
+#         place, regex = False), "status"] = sts
+#     df_original.to_csv(f'{city}.csv', index = [0])
+#     custom_col_2[2].markdown("Saved!")
+
+html("""
+    <script language = "javascript">
     navigator.geolocation.getCurrentPosition(
-        (loc) => {
+        (loc)  = > {
             document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
         }
     )
-    """))
-result = streamlit_bokeh_events(
-    loc_button,
-    events="GET_LOCATION",
-    key="get_location",
-    override_height=40,
-    debounce_time=0)
-
-df_original = pd.read_csv('barcelona.csv', index_col=[0])
-
-custom_col_0 = st.columns((1, 1))
-
-fill = custom_col_0[0].selectbox("Filter day", options=df_original.columns[4:])
-df_entrada = df_original[df_original[fill].notna()].sort_values(fill)
-my_expander = st.expander(label='Advanced Filters')
-with my_expander:
-    
-    itovisit = st.checkbox("To Visit",value=False)
-    if itovisit:
-        done = df_entrada[df_entrada["status"]!="Done"]
-        yyyyy = list(done['title'])
-    else:
-        done = df_entrada#[df_entrada["status"]!="Done"]
-        yyyyy = list(done['title'])        
-    
-    yyyyy = st.multiselect("Filter Places",options=list(df_entrada['title']),default=yyyyy)
-
-    df_entrada=df_entrada[df_entrada["title"].isin(yyyyy)]
-    custom_col_1 = st.columns((.5, 1, .5))
-    custom_col_1[0].write("Calculate route")
-    if custom_col_1[0].button("calculate"):
-        data_model = create_data_model(df_entrada)
-        manager = pywrapcp.RoutingIndexManager(len(data_model["distance_matrix"]), data_model["num_vehicles"], data_model["depot"])
-        routing = pywrapcp.RoutingModel(manager)
-        transit_callback_index = routing.RegisterTransitCallback(distance_callback)
-        routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.local_search_metaheuristic = (routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH)
-        search_parameters.time_limit.seconds = 30
-        assignment = routing.SolveWithParameters(search_parameters)
-        val = print_solution_gmaps(manager, routing, assignment, data_model)
-        val.append(val[0])
-        df_entrada = pd.DataFrame(val)
-        df_entrada.columns ="lat","lng","title","status"
-        df_entrada = df_entrada.drop_duplicates("title").reset_index(drop=True)
-        st.session_state.df_entrada = df_entrada
-
-    column = custom_col_1[1].text_input("Name of Route")
-    custom_col_1[2].write("Click to Save Route")
-    if custom_col_1[2].button("Save As") and column:
-        df_entrada = st.session_state.df_entrada.reset_index()
-        new = df_entrada[["title","index"]]
-        new.columns = "title",column
-        try:
-            df_original=df_original.drop(columns=column)
-        except:
-            pass
-        df_original = pd.merge(df_original,new,on="title",how="left")
-        df_original.to_csv("barcelona.csv", index=[0])
-        custom_col_1[2].write("Saved")
-
-fig = plot_figure(df_entrada)
-st.plotly_chart(fig, use_container_width=True)
-
-
-custom_col_2 = st.columns((2, 1, .5))
-mylist = df_original['title']+" (" + df_original['status']+") "
-place = custom_col_2[0].selectbox("Status", options=list(mylist))[:-8]
-sts = custom_col_2[1].selectbox("Status", options=("Done", "ToDo"))
-if custom_col_2[2].button("Update"):
-    df_original.loc[df_original["title"].str.contains(place, regex=False), "status"] = sts    
-    df_original.to_csv('barcelona.csv', index=[0])
-    custom_col_2[2].markdown("Saved!")
-    st.experimental_rerun()
+    </script>
+    """)
