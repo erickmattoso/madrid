@@ -50,7 +50,7 @@ routename = list(routes.itertuples(index=False))  #THIS IS A TEMP SOLUTION
 ## SECOND PART - FILTERS
 
 # custom cols
-custom_cols = st.columns((1, 1))
+custom_col1 = st.columns((1, 1))
 
 # add the option all
 filter_names = list(set([item[0] for item in routename])) # get unique filters
@@ -58,7 +58,7 @@ filter_names = sorted(filter_names)  # ordering alphabetically
 filter_names.insert(0, 'All') # insert option all
 
 # choose filter route options
-route_filter = custom_cols[0].selectbox('Choose a filter', options = filter_names)
+route_filter = custom_col1[0].selectbox('Choose a filter', options = filter_names)
 
 # If filter is All it remains as the original
 if route_filter ==  'All':
@@ -120,7 +120,6 @@ if ((st.session_state['button'] ==  True) and (routename_chosen) and (routename_
     iteraction = len(placesid)
     final_routename = [item for item in routename_all if ((item[0]!=routename_chosen)or(item[1]!=usersid))] #THIS IS A TEMP SOLUTION
 
-
     if exists:
         st.sidebar.write('This register already exists, what you wanna do?')
         custom_cols = st.sidebar.columns((1, 1))
@@ -178,21 +177,21 @@ myplaces = [item[1] for item in df_entrada_tuple]
 if len(myplaces) > 3:
     myplaces, coordinates = tspmodel.model_TSP(coordinates, myplaces)
 
-# create points in map - All points
+# create points in map - All points - black
 lat = [item[2] for item in df_original_tuple]
 lng = [item[3] for item in df_original_tuple]
 all_ = [tuple(x) for x in zip(lat, lng, all_original_places)] #tuple of coord
 
-# create points in map - already visited   
+# create points in map - already visited - red  
 done = [item for item in df_original_tuple if item[4] ==  'Done']
 lat = [item[2] for item in done]
 lng = [item[3] for item in done]
 done = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
-# create points in map - to be visited
+# create points in map - to be visited - green
 todo = [item for item in df_entrada_tuple if item[4] !=  'Done']
-lat = [item[2] for item in todo]
-lng = [item[3] for item in todo]
+lat  = [item[2] for item in todo]
+lng  = [item[3] for item in todo]
 todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
 # create map
@@ -208,3 +207,21 @@ mappy.fit_bounds(boundaries)
 
 # plot map
 st.write(mappy)
+
+points = [] #THIS IS A TEMP SOLUTION
+for city in myplaces: #THIS IS A TEMP SOLUTION
+    points.append(coordinates[city]) #THIS IS A TEMP SOLUTION
+points.append(points[0]) #THIS IS A TEMP SOLUTION
+
+Z=[] #THIS IS A TEMP SOLUTION
+for i in range(len(points)): #THIS IS A TEMP SOLUTION
+    Z.append(','.join(map(str, points[i]))) #THIS IS A TEMP SOLUTION
+
+custom_col1[1].write("Open on GoogleMaps")
+if custom_col1[1].button('GoogleMaps'):
+    import webbrowser
+    if len(Z) > 25:
+        custom_col1[1].warning(f"Sorry, GoogleMaps accepts up to 24 places. You have selected {len(Z)-1}")
+    else:
+        url = ("https://www.google.com/maps/dir/"+'/'.join(map(str, Z))+"/data=!3m1!4b1!4m2!4m1!3e2") #THIS IS A TEMP SOLUTION
+        webbrowser.open_new_tab(url)
