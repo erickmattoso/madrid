@@ -9,7 +9,7 @@ import folium
 import readdata as rdt
 import streamlit as st
 import tspmodel
-from webbrowser import open
+from streamlit.components.v1 import html
 
 ## PAGE LAYOUT
 # Define the size of this page
@@ -220,13 +220,17 @@ Z=[] #THIS IS A TEMP SOLUTION
 for i in range(len(points)): #THIS IS A TEMP SOLUTION
     Z.append(','.join(map(str, points[i]))) #THIS IS A TEMP SOLUTION
 
-custom_col1[1].write("Open on GoogleMaps")
-if custom_col1[1].button('GoogleMaps'):
-    if len(Z) > 25:
-        custom_col1[1].warning(f"Sorry, GoogleMaps accepts up to 24 places. You have selected {len(Z)-1}")
-    else:
-        url = ("https://www.google.com/maps/dir/"+'/'.join(map(str, Z))+"/data=!3m1!4b1!4m2!4m1!3e2") #THIS IS A TEMP SOLUTION
-        # webbrowser.open_new_tab(url)
-        open(url)
+# custom_col1[1].write("Open on GoogleMaps")
 
-# url = "https://www.google.com/maps/dir/41.403423,2.174611/41.41142,2.174328/41.391712,2.164824/41.39493,2.16177/41.395325,2.161925/41.39621,2.161339/41.40341,2.15066/41.412766,2.131519/41.4215,2.1192/41.380924,2.122952/41.37494,2.14834/41.371174,2.151718/41.368454,2.153715/41.36852,2.159726/41.364548,2.165427/41.378883,2.17424/41.38174,2.171584/41.382168,2.172549/41.387573,2.175302/41.387,2.17611/41.38442,2.17601/41.3827,2.177113/41.38349,2.18178/41.388542,2.18718/41.403423,2.174611/@41.3927926,2.113914,13z/data=!3m1!4b1!4m2!4m1!3e2"
+if len(Z) <= 25:
+    url = ("https://www.google.com/maps/dir/"+'/'.join(map(str, Z))+"/data=!3m1!4b1!4m2!4m1!3e2") #THIS IS A TEMP SOLUTION
+    custom_col1[1].markdown(f"[GoogleMaps]({url})")
+# if custom_col1[1].button('GoogleMaps'):
+#     if len(Z) > 25:
+#         custom_col1[1].warning(f"Sorry, GoogleMaps accepts up to 24 places. You have selected {len(Z)-1}")
+#     else:
+#         html(f"""
+#             <script language = "javascript">
+#                 window.open({url},'_blank');
+#             </script>
+#         """)
