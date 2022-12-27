@@ -117,14 +117,14 @@ def plotmap(todo=None,done=None,all=None,myplaces=None,coordinates=None):
     # create points in map - all places
     for lats, lons, title in all:
         # Define html inside marker pop-up
-        column_html = folium.Html(f"""
-        <p style = "text-align: center;">{title}</p>
-        """, script = True)
-        popup = folium.Popup(column_html)
+        # column_html = folium.Html(f"""
+        # <p style = "text-align: center;">{title}</p>
+        # """, script = True)
+        # popup = folium.Popup(column_html)
         mappy.add_child(folium.CircleMarker(
             location = [lats, lons],
             radius = 4,
-            popup = popup,
+            # popup = popup,
             color = "black",
             fill = True,
             tooltip = f'{title}',
