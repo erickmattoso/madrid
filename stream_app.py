@@ -196,74 +196,16 @@ lng = [item[3] for item in todo]
 todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
 # create map
-
-# @st.cache(allow_output_mutation = True)
-def plotmap(todo=None,done=None,allT=None,myplaces=None,coordinates=None):
-    """TODO: Explains Later"""
-    # filter coord
-    points = []
-    for city in myplaces:
-        points.append(coordinates[city])
-    points.append(points[0])
-
-    # create map
-    mappy = folium.Map()
-    # folium.TileLayer('stamenterrain').add_to(mappy)
-    # folium.TileLayer('openstreetmap').add_to(mappy)
-    # folium.TileLayer('stamentoner').add_to(mappy)
-    # folium.TileLayer('cartodbpositron').add_to(mappy)
-
-    # add Layer Control
-    # folium.LayerControl().add_to(mappy)
-
-    # create lines between poins
-    folium.PolyLine(points, color = "green", opacity = 1).add_to(mappy)
-
-    # create points in map - to be visited
-    # for lats, lons in todo:
-    #     mappy.add_child(folium.CircleMarker(
-    #         location = [lats, lons],
-    #         radius = 7,
-    #         color = "green",
-    #         fill = True,
-    #         fill_opacity = 1))
-
-    # create points in map - already visited   
-    # for lats, lons in done:
-    #     mappy.add_child(folium.CircleMarker(
-    #         location = [lats, lons],
-    #         radius = 7,
-    #         color = "red",
-    #         fill = True,
-    #         fill_opacity = 1))
-    
-    # create points in map - all places
-    # for lats, lons, title in allT:
-        # Define html inside marker pop-up
-        # column_html = folium.Html(f"""
-        # <p style = "text-align: center;">{title}</p>
-        # """, script = True)
-        # popup = folium.Popup(column_html)
-        # mappy.add_child(folium.CircleMarker(
-        #     location = [lats, lons],
-        #     radius = 4,
-        #     # popup = popup,
-        #     color = "black",
-        #     fill = True,
-        #     # tooltip = f'{title}',
-        #     fill_opacity = 1))
-
-    return mappy
-mappy = plotmap(todo=todo,done=done,allT=all_,myplaces=myplaces,coordinates=coordinates)
+mappy = folium.Map()
 
 
 # create boundaries to centralize
 latz = [item[2] for item in df_entrada_tuple]
 lngz = [item[3] for item in df_entrada_tuple]
-boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
+# boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
 
 # fit mappy in these boundaries
-mappy.fit_bounds(boundaries)
+# mappy.fit_bounds(boundaries)
 
 # plot map
 # st.write(mappy)
