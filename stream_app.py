@@ -222,5 +222,4 @@ for i in range(len(points)): #THIS IS A TEMP SOLUTION
 
 if len(Z) <= 25:
     url = ("https://www.google.com/maps/dir/"+'/'.join(map(str, Z))+"/data=!3m1!4b1!4m2!4m1!3e2") #THIS IS A TEMP SOLUTION
-    custom_col1[1].markdown("Open on Google Maps")
     custom_col1[1].markdown(f"[Open on Google Maps]({url})")
