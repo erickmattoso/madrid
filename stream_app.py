@@ -3,7 +3,7 @@
 """
 
 ## IMPORT LIBS
-from streamlit.components.v1 import html
+# from streamlit.components.v1 import html
 import tspmodel
 import streamlit as st
 # from models import Routes
@@ -198,18 +198,13 @@ todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 mappy = rdt.plotmap(todo=todo,done=done,all=all_,myplaces=myplaces,coordinates=coordinates)
 
 
-asasasas=True
-if asasasas:
-    # create boundaries to centralize
-    latz = [item[2] for item in df_entrada_tuple]
-    lngz = [item[3] for item in df_entrada_tuple]
-    boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
+# create boundaries to centralize
+latz = [item[2] for item in df_entrada_tuple]
+lngz = [item[3] for item in df_entrada_tuple]
+boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
 
-    # fit mappy in these boundaries
-    mappy.fit_bounds(boundaries)
-
-else:
-    mappy.fit_bounds(mappy.get_bounds(), padding=(30, 30))
+# fit mappy in these boundaries
+mappy.fit_bounds(boundaries)
 
 # plot map
 st.write(mappy)
@@ -228,12 +223,12 @@ st.write(mappy)
 #     df_original.to_csv(f'{city}.csv', index = [0])
 #     custom_col_2[2].markdown("Saved!")
 
-html("""
-    <script language = "javascript">
-    navigator.geolocation.getCurrentPosition(
-        (loc)  = > {
-            document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
-        }
-    )
-    </script>
-    """)
+# html("""
+#     <script language = "javascript">
+#     navigator.geolocation.getCurrentPosition(
+#         (loc)  = > {
+#             document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
+#         }
+#     )
+#     </script>
+#     """)
