@@ -11,16 +11,16 @@ import readdata as rdt
 
 ## PAGE LAYOUT
 # Define the size of this page
-st.set_page_config(layout = 'wide')
+# st.set_page_config(layout = 'wide')
 
 # config streamlit layout
-hide_streamlit_style = \
-    """
-    <style>
-        .css-18e3th9 {padding: 1.5rem 1rem 1rem;}
-    </style>
-    """
-st.markdown(hide_streamlit_style, unsafe_allow_html = True)
+# hide_streamlit_style = \
+#     """
+#     <style>
+#         .css-18e3th9 {padding: 1.5rem 1rem 1rem;}
+#     </style>
+#     """
+# st.markdown(hide_streamlit_style, unsafe_allow_html = True)
 
 ## TODO: Function to filter usersid
 usersid = 1
@@ -208,27 +208,3 @@ mappy.fit_bounds(boundaries)
 
 # plot map
 st.write(mappy)
-
-## Fourth part - Save what is Done
-# st.markdown("---")
-# custom_col_2 = st.columns((2, 1, .5))
-# mylist = df_original['title']+" (" + df_original['status']+") "
-# place = custom_col_2[0].selectbox("Status", options = list(mylist))[:-8]
-# sts = custom_col_2[1].selectbox("Status", options = ("Done", "ToDo"))
-
-# custom_col_2[2].write("Save")
-# if custom_col_2[2].button("Update"):
-#     df_original.loc[df_original['title'].str.contains(
-#         place, regex = False), "status"] = sts
-#     df_original.to_csv(f'{city}.csv', index = [0])
-#     custom_col_2[2].markdown("Saved!")
-
-# html("""
-#     <script language = "javascript">
-#     navigator.geolocation.getCurrentPosition(
-#         (loc)  = > {
-#             document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
-#         }
-#     )
-#     </script>
-#     """)
