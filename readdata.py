@@ -7,6 +7,7 @@ from sqlalchemy import MetaData, func
 import streamlit as st
 from models import Base, User, Routes, Places
 from database import session
+import folium
 
 #########
 ## read data: places and comments
