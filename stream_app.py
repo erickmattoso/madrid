@@ -196,7 +196,7 @@ lng = [item[3] for item in todo]
 todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
 # create map
-mappy = rdt.plotmap(todo=todo,done=done,all=all_,myplaces=myplaces,coordinates=coordinates)
+mappy = rdt.plotmap(todo=todo,done=done,allz=all_,myplaces=myplaces,coordinates=coordinates)
 
 # create boundaries to centralize
 latz = [item[2] for item in df_entrada_tuple]

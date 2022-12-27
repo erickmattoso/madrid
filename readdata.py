@@ -3,11 +3,10 @@
 """
 
 ## import libs
-# from sqlalchemy import MetaData, func
-# from models import Base, User, Routes, Places
-# from database import session
+from sqlalchemy import MetaData, func
 import streamlit as st
-import folium
+from models import Base, User, Routes, Places
+from database import session
 
 #########
 ## read data: places and comments
@@ -75,7 +74,7 @@ def insert_table(iteraction=None,modeltable=None,routename_chosen=None,usersid_f
 
 
 @st.cache(allow_output_mutation = True)
-def plotmap(todo=None,done=None,allT=None,myplaces=None,coordinates=None):
+def plotmap(todo=None,done=None,allz=None,myplaces=None,coordinates=None):
     """TODO: Explains Later"""
     # filter coord
     points = []
@@ -85,49 +84,49 @@ def plotmap(todo=None,done=None,allT=None,myplaces=None,coordinates=None):
 
     # create map
     mappy = folium.Map()
-    # folium.TileLayer('stamenterrain').add_to(mappy)
-    # folium.TileLayer('openstreetmap').add_to(mappy)
-    # folium.TileLayer('stamentoner').add_to(mappy)
-    # folium.TileLayer('cartodbpositron').add_to(mappy)
+    folium.TileLayer('stamenterrain').add_to(mappy)
+    folium.TileLayer('openstreetmap').add_to(mappy)
+    folium.TileLayer('stamentoner').add_to(mappy)
+    folium.TileLayer('cartodbpositron').add_to(mappy)
 
     # add Layer Control
-    # folium.LayerControl().add_to(mappy)
+    folium.LayerControl().add_to(mappy)
 
     # create lines between poins
     folium.PolyLine(points, color = "green", opacity = 1).add_to(mappy)
 
     # create points in map - to be visited
-    # for lats, lons in todo:
-    #     mappy.add_child(folium.CircleMarker(
-    #         location = [lats, lons],
-    #         radius = 7,
-    #         color = "green",
-    #         fill = True,
-    #         fill_opacity = 1))
+    for lats, lons in todo:
+        mappy.add_child(folium.CircleMarker(
+            location = [lats, lons],
+            radius = 7,
+            color = "green",
+            fill = True,
+            fill_opacity = 1))
 
     # create points in map - already visited   
-    # for lats, lons in done:
-    #     mappy.add_child(folium.CircleMarker(
-    #         location = [lats, lons],
-    #         radius = 7,
-    #         color = "red",
-    #         fill = True,
-    #         fill_opacity = 1))
+    for lats, lons in done:
+        mappy.add_child(folium.CircleMarker(
+            location = [lats, lons],
+            radius = 7,
+            color = "red",
+            fill = True,
+            fill_opacity = 1))
     
     # create points in map - all places
-    for lats, lons, title in allT:
+    for lats, lons, title in allz:
         # Define html inside marker pop-up
-        # column_html = folium.Html(f"""
-        # <p style = "text-align: center;">{title}</p>
-        # """, script = True)
-        # popup = folium.Popup(column_html)
+        column_html = folium.Html(f"""
+        <p style = "text-align: center;">{title}</p>
+        """, script = True)
+        popup = folium.Popup(column_html)
         mappy.add_child(folium.CircleMarker(
             location = [lats, lons],
             radius = 4,
-            # popup = popup,
+            popup = popup,
             color = "black",
             fill = True,
-            # tooltip = f'{title}',
+            tooltip = f'{title}',
             fill_opacity = 1))
 
     return (mappy)
