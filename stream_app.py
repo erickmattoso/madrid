@@ -220,18 +220,7 @@ Z=[] #THIS IS A TEMP SOLUTION
 for i in range(len(points)): #THIS IS A TEMP SOLUTION
     Z.append(','.join(map(str, points[i]))) #THIS IS A TEMP SOLUTION
 
-# custom_col1[1].write("Open on GoogleMaps")
-
 if len(Z) <= 25:
     url = ("https://www.google.com/maps/dir/"+'/'.join(map(str, Z))+"/data=!3m1!4b1!4m2!4m1!3e2") #THIS IS A TEMP SOLUTION
     custom_col1[1].markdown("Open on Google Maps")
-    custom_col1[1].markdown(f"[GoogleMaps]({url})")
-# if custom_col1[1].button('GoogleMaps'):
-#     if len(Z) > 25:
-#         custom_col1[1].warning(f"Sorry, GoogleMaps accepts up to 24 places. You have selected {len(Z)-1}")
-#     else:
-#         html(f"""
-#             <script language = "javascript">
-#                 window.open({url},'_blank');
-#             </script>
-#         """)
+    custom_col1[1].markdown(f"[Open on Google Maps]({url})")
