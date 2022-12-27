@@ -7,7 +7,7 @@
 import tspmodel
 import streamlit as st
 # from models import Routes
-import readdata as rdt
+# import readdata as rdt
 
 ## PAGE LAYOUT
 # Define the size of this page
@@ -196,7 +196,7 @@ todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
 # create map
 
-@st.cache(allow_output_mutation = True)
+# @st.cache(allow_output_mutation = True)
 def plotmap(todo=None,done=None,allT=None,myplaces=None,coordinates=None):
     """TODO: Explains Later"""
     # filter coord
@@ -253,7 +253,7 @@ def plotmap(todo=None,done=None,allT=None,myplaces=None,coordinates=None):
             fill_opacity = 1))
 
     return (mappy)
-mappy = plotmap(todo=todo,done=done,all=all_,myplaces=myplaces,coordinates=coordinates)
+mappy = plotmap(todo=todo,done=done,allT=all_,myplaces=myplaces,coordinates=coordinates)
 
 
 # create boundaries to centralize
