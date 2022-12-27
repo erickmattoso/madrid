@@ -6,9 +6,9 @@
 # from streamlit.components.v1 import html
 import tspmodel
 import streamlit as st
-import folium
+# import folium
 # from models import Routes
-# import readdata as rdt
+import readdata as rdt
 
 ## PAGE LAYOUT
 # Define the size of this page
@@ -196,16 +196,15 @@ lng = [item[3] for item in todo]
 todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
 # create map
-OP = [51.9071833, 4.4728155]
-mappy = folium.Map(OP)
+mappy = rdt.plotmap(todo=todo,done=done,all=all_,myplaces=myplaces,coordinates=coordinates)
 
 # create boundaries to centralize
 latz = [item[2] for item in df_entrada_tuple]
 lngz = [item[3] for item in df_entrada_tuple]
-# boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
+boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
 
 # fit mappy in these boundaries
-# mappy.fit_bounds(boundaries)
+mappy.fit_bounds(boundaries)
 
 # plot map
 st.write(mappy)
