@@ -6,6 +6,7 @@
 # from database import session
 # from models import Base, User, Routes, Places
 # from sqlalchemy import MetaData, func
+from folium.plugins import Draw
 import folium
 import streamlit as st
 
@@ -92,6 +93,17 @@ def plotmap(todo=None,done=None,allz=None,myplaces=None,coordinates=None):
 
     # add Layer Control
     folium.LayerControl().add_to(mappy)
+
+    # Draw(
+    #     draw_options={
+    #         'polyline': False,
+    #         'rectangle': True, 
+    #         'circle': True,
+    #         'polygon': True,
+    #         'circlemarker': False
+    #     },
+    #     edit_options={'remove': False}
+    # ).add_to(mappy)    
 
     # create lines between poins
     folium.PolyLine(points, color = "green", opacity = 1).add_to(mappy)

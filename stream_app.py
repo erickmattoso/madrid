@@ -9,6 +9,7 @@ import folium
 import readdata as rdt
 import streamlit as st
 import tspmodel
+import webbrowser
 
 ## PAGE LAYOUT
 # Define the size of this page
@@ -213,13 +214,14 @@ for city in myplaces: #THIS IS A TEMP SOLUTION
     points.append(coordinates[city]) #THIS IS A TEMP SOLUTION
 points.append(points[0]) #THIS IS A TEMP SOLUTION
 
+
+
 Z=[] #THIS IS A TEMP SOLUTION
 for i in range(len(points)): #THIS IS A TEMP SOLUTION
     Z.append(','.join(map(str, points[i]))) #THIS IS A TEMP SOLUTION
 
 custom_col1[1].write("Open on GoogleMaps")
 if custom_col1[1].button('GoogleMaps'):
-    import webbrowser
     if len(Z) > 25:
         custom_col1[1].warning(f"Sorry, GoogleMaps accepts up to 24 places. You have selected {len(Z)-1}")
     else:
