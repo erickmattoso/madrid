@@ -197,7 +197,7 @@ todo = [tuple(x) for x in zip(lat, lng)] #tuple of coord
 
 # create map
 # mappy = folium.Map()
-
+st.write(df_entrada_tuple)
 
 # create boundaries to centralize
 latz = [item[2] for item in df_entrada_tuple]
