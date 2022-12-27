@@ -238,22 +238,22 @@ def plotmap(todo=None,done=None,allT=None,myplaces=None,coordinates=None):
     #         fill_opacity = 1))
     
     # create points in map - all places
-    for lats, lons, title in allT:
+    # for lats, lons, title in allT:
         # Define html inside marker pop-up
         # column_html = folium.Html(f"""
         # <p style = "text-align: center;">{title}</p>
         # """, script = True)
         # popup = folium.Popup(column_html)
-        mappy.add_child(folium.CircleMarker(
-            location = [lats, lons],
-            radius = 4,
-            # popup = popup,
-            color = "black",
-            fill = True,
-            # tooltip = f'{title}',
-            fill_opacity = 1))
+        # mappy.add_child(folium.CircleMarker(
+        #     location = [lats, lons],
+        #     radius = 4,
+        #     # popup = popup,
+        #     color = "black",
+        #     fill = True,
+        #     # tooltip = f'{title}',
+        #     fill_opacity = 1))
 
-    return (mappy)
+    return mappy
 mappy = plotmap(todo=todo,done=done,allT=all_,myplaces=myplaces,coordinates=coordinates)
 
 
@@ -266,4 +266,5 @@ boundaries = [[min(latz),min(lngz)],[max(latz),max(lngz)]]
 mappy.fit_bounds(boundaries)
 
 # plot map
-st.write(mappy)
+# st.write(mappy)
+mappy
