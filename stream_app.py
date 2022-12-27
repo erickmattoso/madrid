@@ -3,26 +3,25 @@
 """
 
 ## IMPORT LIBS
-# from streamlit.components.v1 import html
-import tspmodel
-import streamlit as st
 # from models import Routes
-import readdata as rdt
+# from streamlit.components.v1 import html
 import folium
-
+import readdata as rdt
+import streamlit as st
+import tspmodel
 
 ## PAGE LAYOUT
 # Define the size of this page
-# st.set_page_config(layout = 'wide')
+st.set_page_config(layout = 'wide')
 
 # config streamlit layout
-# hide_streamlit_style = \
-#     """
-#     <style>
-#         .css-18e3th9 {padding: 1.5rem 1rem 1rem;}
-#     </style>
-#     """
-# st.markdown(hide_streamlit_style, unsafe_allow_html = True)
+hide_streamlit_style = \
+    """
+    <style>
+        .css-18e3th9 {padding: 1.5rem 1rem 1rem;}
+    </style>
+    """
+st.markdown(hide_streamlit_style, unsafe_allow_html = True)
 
 ## TODO: Function to filter usersid
 usersid = 1

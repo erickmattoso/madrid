@@ -3,11 +3,11 @@
 """
 
 ## import libs
-# from sqlalchemy import MetaData, func
-import streamlit as st
-# from models import Base, User, Routes, Places
 # from database import session
+# from models import Base, User, Routes, Places
+# from sqlalchemy import MetaData, func
 import folium
+import streamlit as st
 
 #########
 ## read data: places and comments
